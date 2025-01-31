@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crunchay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #66bb6a;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .navbar {
+            text-align: center;
+            background-color: #388e3c;
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            background-color: #81c784;
+        }
+
+        .page {
+            padding: 20px;
+            margin: 20px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .product-card {
+            display: inline-block;
+            width: 250px;
+            margin: 10px;
+            text-align: center;
+            background-color: #e8f5e9;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .cart {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .cart-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .checkout {
+            text-align: center;
+            padding: 10px;
+            background-color: #66bb6a;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .cart-button, .checkout-button {
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-button:hover, .checkout-button:hover {
+            background-color: #81c784;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Improved Chatbot Styles */
+        .chat-bubble-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            cursor: pointer;
+            background-color: #66bb6a;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            max-height: 450px;
+            display: none;
+            overflow: hidden;
+            z-index: 1000;
+            animation: slideUp 0.3s ease-in-out;
+        }
+
+        .chat-history {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-right: 5px;
+            padding-left: 5px;
+            padding-top: 10px;
+        }
+
+        .chat-bubble {
+            background-color: #e1ffc7;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 75%;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .chat-bubble.bot {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+            max-width: 70%;
+        }
+
+        .chat-bubble.user {
+            background-color: #66bb6a;
+            color: white;
+            align-self: flex-end;
+            max-width: 70%;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            font-size: 14px;
+            outline: none;
+            background-color: #f5f5f5;
+            box-sizing: border-box;
+        }
+
+        .chat-input:focus {
+            border-color: #66bb6a;
+        }
+
+        .send-button {
+            background-color: #66bb6a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            background-color: #388e3c;
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Popup Notification */
+        .popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #388e3c;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Crunchay</h1>
+</header>
+
+<div class="navbar">
+    <a href="#home" onclick="showPage('home')">Home</a>
+    <a href="#about" onclick="showPage('about')">About Us</a>
+    <a href="#contact" onclick="showPage('contact')">Contact Us</a>
+    <a href="#products" onclick="showPage('products')">Products</a>
+    <a href="#cart" onclick="showPage('cart')">View Cart</a>
+</div>
+
+<div id="home" class="page">
+    <section>
+        <h2>Welcome to Crunchay!</h2>
+        <img src="https://i.ibb.co/Vwg1mbt/crunchaybg.png" alt="Crunchay Chips" style="width: 100%; border-radius: 8px;">
+    </section>
+</div>
+
+<div id="about" class="page" style="display:none;">
+    <section>
+        <h2>About Us</h2>
+        <p>Crunchay offers specialized chips made from Malunggay Moringga leaves. It is a healthier alternative to junk food using Malunggay leaves.</p>
+    </section>
+    <section>
+        <h2>Our Team</h2>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Malunggay Chips">
+            <p>Larah Fiona Mejia</p>
+        </div>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Spicy Malunggay Chips">
+            <p>Pilosopo Tacio</p>
+        </div>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Spicy Malunggay Chips">
+            <p>Pilosopo Tacio</p>
+        </div>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Spicy Malunggay Chips">
+            <p>Pilosopo Tacio</p>
+        </div>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Spicy Malunggay Chips">
+            <p>Pilosopo Tacio</p>
+        </div>
+    </section>
+</div>
+
+<div id="contact" class="page" style="display:none;">
+    <section>
+        <center>
+        <h2>Contact Us</h2>
+        <h2>WE LOVE TO HEAR FROM YOU! CONNECT WITH US: </h2> 
+        <h3>Address: Paranaque city, Philippines
+            <br> 
+            Email: Crunchayveggies@gmail.com
+            <br>
+            Phone: 0987654321</h3>
+            <br>
+            <h4>Facebook: Crunchayveggies</h4>
+          </div>
+          </center>
+    </section>
+</div>
+
+<div id="products" class="page" style="display:none;">
+    <section>
+        <h2>Our Products</h2>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Malunggay Chips">
+            <p>Malunggay Chips</p>
+            <p>₱100</p>
+            <button class="cart-button" onclick="addToCart('Malunggay Chips', 100)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Spicy Malunggay Chips">
+            <p>Spicy Malunggay Chips</p>
+            <p>₱120</p>
+            <button class="cart-button" onclick="addToCart('Spicy Malunggay Chips', 120)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://i.ibb.co/M53GrWP/product1.png" alt="Spicy Malunggay Chips">
+            <p>Garlic Malunggay Chips</p>
+            <p>₱140</p>
+            <button class="cart-button" onclick="addToCart('Garlic Malunggay Chips', 140)">Add to Cart</button>
+        </div>
+    </section>
+</div>
+
+<div id="cart" class="page" style="display:none;">
+    <section>
+        <h2>Your Cart</h2>
+        <div id="cart-items" class="cart-list">
+            <!-- Items will appear here -->
+        </div>
+        <div class="checkout">
+            <button class="checkout-button" onclick="checkout()">Checkout</button>
+        </div>
+        <!-- QR Code Section -->
+        <div id="qr-code" class="qr-code" style="display:none;">
+            <h3>Scan QR Code to Pay</h3>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR Code" style="width: 150px;">
+        </div>
+    </section>
+</div>
+
+<!-- Chatbot Button -->
+<div class="chat-bubble-container" onclick="toggleChatWindow()">💬</div>
+
+<!-- Chat Window -->
+<div id="chat-window" class="chat-window">
+    <div id="chat-history" class="chat-history">
+        <!-- Chat history will appear here -->
+    </div>
+    <input type="text" id="chat-input" class="chat-input" placeholder="Type a message..." onkeydown="handleChat(event)">
+    <button class="send-button" onclick="sendChat()">Send</button>
+</div>
+
+<!-- Popup Notification -->
+<div id="popup" class="popup"></div>
+
+<script>
+    let cart = [];
+
+    function addToCart(productName, price) {
+        cart.push({ productName, price });
+        showPopup(`${productName} added to cart.`);
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById("cart-items");
+        cartItems.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+            cartItems.innerHTML += `<div class="cart-item">${item.productName} - ₱${item.price}</div>`;
+            total += item.price;
+        });
+        cartItems.innerHTML += `<div class="cart-item">Total: ₱${total}</div>`;
+    }
+
+    function checkout() {
+        document.getElementById('qr-code').style.display = 'block';
+    }
+
+    // Chatbot functionality
+    function handleChat(event) {
+        if (event.key === 'Enter') {
+            sendChat();
+        }
+    }
+
+    function sendChat() {
+        const input = document.getElementById("chat-input");
+        const chatHistory = document.getElementById("chat-history");
+
+        if (input.value.trim() !== '') {
+            const userInput = input.value;
+            chatHistory.innerHTML += `<div class="chat-bubble user">${userInput}</div>`;
+            input.value = '';
+
+            // Bot response
+            const botResponse = getBotResponse(userInput);
+            chatHistory.innerHTML += `<div class="chat-bubble bot">${botResponse}</div>`;
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+    }
+
+    function getBotResponse(userInput) {
+        const responses = {
+            "hello": ["Hi there!", "Hello! How can I assist you?", "Hey! How can I help?"],
+            "hi": ["Hi there!", "Hello! How can I assist you?", "Hey! How can I help?"],
+            "hey": ["Hey there!", "Hello! How can I help you?", "Hi! How can I assist you today?"],
+            "greetings": ["Hello!", "Hi there! How can I assist you?", "Hey! How can I help today?"],
+            "good morning": ["Good morning! How can I help you today?", "Good morning! How can I assist you?"],
+            "good afternoon": ["Good afternoon! How can I help you today?", "Good afternoon! How can I assist you?"],
+            "good evening": ["Good evening! How can I help you?", "Good evening! How can I assist you today?"],
+            "how are you": ["I'm doing great, thanks for asking!", "I'm doing awesome! How about you?", "I'm good, thanks! How can I assist you?"],
+            "how's it going": ["It's going well, thanks for asking! How can I help?", "I'm doing great! How can I assist you today?"],
+            "what's up": ["Not much, just here to help! How can I assist you?", "I'm here and ready to assist! What's up?"],
+            "what is your name": ["I'm CrunchayBot!", "You can call me CrunchayBot.", "I go by CrunchayBot, nice to meet you!"],
+            "who are you": ["I’m CrunchayBot, here to help you with all your questions!", "I’m CrunchayBot, your friendly assistant!"],
+            "can you help me": ["Of course! How can I assist you?", "I’m happy to help! What can I do for you?"],
+            "can I talk to a person": ["I can assist you with most questions, but if you need further help, I can direct you to a real person!", "I’m here to help, but if you prefer talking to someone else, I can connect you with a person!"],
+            "help": ["I'm here to assist you! What do you need help with?", "What can I help you with today?"],
+            "thank you": ["You're welcome!", "Glad I could help!", "You're welcome! Let me know if you need anything else."],
+            "thanks": ["You're welcome!", "Happy to help!", "You're welcome! Let me know if you need more assistance."],
+            "goodbye": ["Goodbye! Have a great day!", "See you later! Let me know if you need help in the future!", "Goodbye, take care!"],
+            "bye": ["Bye! Have a great day ahead!", "Goodbye! Hope to assist you again soon!", "Take care! Bye!"],
+            "how are you": ["I'm doing great, thanks for asking!", "I'm doing awesome! How about you?", "I'm good, thanks! How can I assist you?"],
+            "what is your name": ["I'm CrunchayBot!", "You can call me CrunchayBot.", "I go by CrunchayBot, nice to meet you!"],
+            "how much is malunggay chips": ["Malunggay Chips are ₱100.", "The Spicy Malunggay Chips cost ₱120.", "It's ₱100 for Malunggay Chips and Spicy Malunggay Chips cost ₱120."],
+            "what are malunggay chips": ["Malunggay Chips are a healthy alternative to traditional junk food chips, made from moringa leaves and full of nutrients!", "Our Malunggay Chips are made from Moringa, a superfood, offering a nutritious and crunchy snack!"],
+            "how are malunggay chips healthy": ["Malunggay Chips are packed with vitamins, minerals, and antioxidants, making them a great snack for boosting your energy and health!", "Made from Moringa leaves, Malunggay Chips offer a nutritious alternative to unhealthy junk food chips, rich in iron, calcium, and vitamin A!"],
+            "do you ship": ["Yes, we do! We offer shipping to various locations.", "We do offer shipping! Where would you like your Malunggay Chips delivered to?"],
+            "where can I buy malunggay chips": ["You can purchase them directly from our website!", "Simply browse our shop to order your Malunggay Chips now!"],
+            "can I order in bulk": ["Yes, we offer bulk orders! Please contact us for more details.", "Bulk orders are available. Let us know how much you need, and we'll take care of the rest!"],
+            "is there a discount for bulk orders": ["Yes! We offer discounts for bulk orders. Reach out to us for more information.", "We have special pricing for bulk orders. Contact us for details!"],
+            "do you have other flavors": ["Currently, we offer classic Malunggay Chips. Stay tuned for more exciting flavors in the future!", "At the moment, we only have the original flavor, but more options are coming soon!"],
+            "how should I store malunggay chips": ["To keep them fresh, store Malunggay Chips in an airtight container and place them in a cool, dry place.", "We recommend storing your Malunggay Chips in an airtight container at room temperature for maximum freshness!"],
+            "are malunggay chips vegan": ["Yes, our Malunggay Chips are 100% vegan, made with only natural ingredients.", "Absolutely! Our Malunggay Chips are plant-based and vegan-friendly."],
+            "can I eat malunggay chips on a diet": ["Yes! Malunggay Chips are a healthy snack, perfect for those on a diet due to their low calories and high nutritional value.", "Definitely! With their high nutrient content and low calorie count, Malunggay Chips are a great choice for your diet."],
+            "what is moringa": ["Moringa is a superfood known for its rich nutritional profile, including vitamins, minerals, and antioxidants. It's the main ingredient in our Malunggay Chips!", "Moringa, also known as Malunggay, is packed with nutrients and is great for overall health. It’s the key ingredient in our chips!"],
+            "how many pieces are in a bag of malunggay chips": ["Each bag contains about 50g of delicious Malunggay Chips. The exact number of pieces may vary.", "The quantity per bag depends on weight, but you'll get a generous serving of crispy Malunggay Chips!"],
+            "are malunggay chips gluten-free": ["Yes, our Malunggay Chips are gluten-free, making them suitable for those with gluten sensitivities.", "Absolutely! Our Malunggay Chips contain no gluten, perfect for those with dietary restrictions."],
+            "do you offer any other snacks": ["Currently, we specialize in Malunggay Chips, but we are working on expanding our healthy snack offerings.", "We currently offer only Malunggay Chips, but we are looking to add more healthy snacks soon!"],
+            "how do I pay for my order": ["You can pay via credit card, PayPal, or other secure online payment methods on our website.", "We accept payments through credit card, PayPal, and other online payment options for your convenience."],
+            "can I return my order": ["We accept returns within 7 days if the product is unopened and in its original condition.", "Yes, we offer returns within 7 days for unopened items. Please contact us for further instructions."],
+            "when will I receive my order": ["Your order will be shipped within 1-3 business days. Delivery times depend on your location.", "We process orders within 1-3 business days, and delivery times vary based on your location."],
+            "do you offer gift cards": ["Not at the moment, but we are considering offering gift cards in the future.", "Currently, we do not offer gift cards, but we may add them later on! Stay tuned!"],
+            "are malunggay chips crunchy": ["Yes! Our Malunggay Chips are perfectly crispy and crunchy, making them a satisfying snack!", "You can count on our Malunggay Chips to be deliciously crispy and crunchy!"],
+            "why should I choose malunggay chips": ["Malunggay Chips are a nutritious, tasty, and guilt-free snack that's perfect for anyone looking to make healthier choices!", "Choose Malunggay Chips for a healthy, flavorful alternative to traditional junk food chips! Packed with nutrients, they’re the smarter snack choice!"]
+        };
+
+        // Match input and return a random response
+        const normalizedInput = userInput.toLowerCase();
+        for (let key in responses) {
+            if (normalizedInput.includes(key)) {
+                return responses[key][Math.floor(Math.random() * responses[key].length)];
+            }
+        }
+
+        return "Sorry, I didn't understand that. Can you ask something else?";
+    }
+
+    function toggleChatWindow() {
+        const chatWindow = document.getElementById('chat-window');
+        chatWindow.style.display = (chatWindow.style.display === 'none') ? 'block' : 'none';
+    }
+
+    // Page Management
+    function showPage(page) {
+        let pages = document.querySelectorAll('.page');
+        pages.forEach(p => p.style.display = 'none');
+        document.getElementById(page).style.display = 'block';
+    }
+
+    // Popup Notification
+    function showPopup(message) {
+        const popup = document.getElementById("popup");
+        popup.textContent = message;
+        popup.style.display = "block";
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 2000);
+    }
+
+    // Initial Load
+    showPage('home');
+</script>
+
+</body>
+</html>

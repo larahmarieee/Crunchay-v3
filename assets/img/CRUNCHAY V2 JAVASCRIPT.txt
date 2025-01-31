@@ -1,0 +1,127 @@
+let cart = [];
+
+    function addToCart(productName, price) {
+        cart.push({ productName, price });
+        showPopup(`${productName} added to cart.`);
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById("cart-items");
+        cartItems.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+            cartItems.innerHTML += `<div class="cart-item">${item.productName} - ₱${item.price}</div>`;
+            total += item.price;
+        });
+        cartItems.innerHTML += `<div class="cart-item">Total: ₱${total}</div>`;
+    }
+
+    function checkout() {
+        document.getElementById('qr-code').style.display = 'block';
+    }
+
+    // Chatbot functionality
+    function handleChat(event) {
+        if (event.key === 'Enter') {
+            sendChat();
+        }
+    }
+
+    function sendChat() {
+        const input = document.getElementById("chat-input");
+        const chatHistory = document.getElementById("chat-history");
+
+        if (input.value.trim() !== '') {
+            const userInput = input.value;
+            chatHistory.innerHTML += `<div class="chat-bubble user">${userInput}</div>`;
+            input.value = '';
+
+            // Bot response
+            const botResponse = getBotResponse(userInput);
+            chatHistory.innerHTML += `<div class="chat-bubble bot">${botResponse}</div>`;
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+    }
+
+    function getBotResponse(userInput) {
+        const responses = {
+            "hello": ["Hi there!", "Hello! How can I assist you?", "Hey! How can I help?"],
+            "hi": ["Hi there!", "Hello! How can I assist you?", "Hey! How can I help?"],
+            "hey": ["Hey there!", "Hello! How can I help you?", "Hi! How can I assist you today?"],
+            "greetings": ["Hello!", "Hi there! How can I assist you?", "Hey! How can I help today?"],
+            "good morning": ["Good morning! How can I help you today?", "Good morning! How can I assist you?"],
+            "good afternoon": ["Good afternoon! How can I help you today?", "Good afternoon! How can I assist you?"],
+            "good evening": ["Good evening! How can I help you?", "Good evening! How can I assist you today?"],
+            "how are you": ["I'm doing great, thanks for asking!", "I'm doing awesome! How about you?", "I'm good, thanks! How can I assist you?"],
+            "how's it going": ["It's going well, thanks for asking! How can I help?", "I'm doing great! How can I assist you today?"],
+            "what's up": ["Not much, just here to help! How can I assist you?", "I'm here and ready to assist! What's up?"],
+            "what is your name": ["I'm CrunchayBot!", "You can call me CrunchayBot.", "I go by CrunchayBot, nice to meet you!"],
+            "who are you": ["I’m CrunchayBot, here to help you with all your questions!", "I’m CrunchayBot, your friendly assistant!"],
+            "can you help me": ["Of course! How can I assist you?", "I’m happy to help! What can I do for you?"],
+            "can I talk to a person": ["I can assist you with most questions, but if you need further help, I can direct you to a real person!", "I’m here to help, but if you prefer talking to someone else, I can connect you with a person!"],
+            "help": ["I'm here to assist you! What do you need help with?", "What can I help you with today?"],
+            "thank you": ["You're welcome!", "Glad I could help!", "You're welcome! Let me know if you need anything else."],
+            "thanks": ["You're welcome!", "Happy to help!", "You're welcome! Let me know if you need more assistance."],
+            "goodbye": ["Goodbye! Have a great day!", "See you later! Let me know if you need help in the future!", "Goodbye, take care!"],
+            "bye": ["Bye! Have a great day ahead!", "Goodbye! Hope to assist you again soon!", "Take care! Bye!"],
+            "how are you": ["I'm doing great, thanks for asking!", "I'm doing awesome! How about you?", "I'm good, thanks! How can I assist you?"],
+            "what is your name": ["I'm CrunchayBot!", "You can call me CrunchayBot.", "I go by CrunchayBot, nice to meet you!"],
+            "how much is malunggay chips": ["Malunggay Chips are ₱100.", "The Spicy Malunggay Chips cost ₱120.", "It's ₱100 for Malunggay Chips and Spicy Malunggay Chips cost ₱120."],
+            "what are malunggay chips": ["Malunggay Chips are a healthy alternative to traditional junk food chips, made from moringa leaves and full of nutrients!", "Our Malunggay Chips are made from Moringa, a superfood, offering a nutritious and crunchy snack!"],
+            "how are malunggay chips healthy": ["Malunggay Chips are packed with vitamins, minerals, and antioxidants, making them a great snack for boosting your energy and health!", "Made from Moringa leaves, Malunggay Chips offer a nutritious alternative to unhealthy junk food chips, rich in iron, calcium, and vitamin A!"],
+            "do you ship": ["Yes, we do! We offer shipping to various locations.", "We do offer shipping! Where would you like your Malunggay Chips delivered to?"],
+            "where can I buy malunggay chips": ["You can purchase them directly from our website!", "Simply browse our shop to order your Malunggay Chips now!"],
+            "can I order in bulk": ["Yes, we offer bulk orders! Please contact us for more details.", "Bulk orders are available. Let us know how much you need, and we'll take care of the rest!"],
+            "is there a discount for bulk orders": ["Yes! We offer discounts for bulk orders. Reach out to us for more information.", "We have special pricing for bulk orders. Contact us for details!"],
+            "do you have other flavors": ["Currently, we offer classic Malunggay Chips. Stay tuned for more exciting flavors in the future!", "At the moment, we only have the original flavor, but more options are coming soon!"],
+            "how should I store malunggay chips": ["To keep them fresh, store Malunggay Chips in an airtight container and place them in a cool, dry place.", "We recommend storing your Malunggay Chips in an airtight container at room temperature for maximum freshness!"],
+            "are malunggay chips vegan": ["Yes, our Malunggay Chips are 100% vegan, made with only natural ingredients.", "Absolutely! Our Malunggay Chips are plant-based and vegan-friendly."],
+            "can I eat malunggay chips on a diet": ["Yes! Malunggay Chips are a healthy snack, perfect for those on a diet due to their low calories and high nutritional value.", "Definitely! With their high nutrient content and low calorie count, Malunggay Chips are a great choice for your diet."],
+            "what is moringa": ["Moringa is a superfood known for its rich nutritional profile, including vitamins, minerals, and antioxidants. It's the main ingredient in our Malunggay Chips!", "Moringa, also known as Malunggay, is packed with nutrients and is great for overall health. It’s the key ingredient in our chips!"],
+            "how many pieces are in a bag of malunggay chips": ["Each bag contains about 50g of delicious Malunggay Chips. The exact number of pieces may vary.", "The quantity per bag depends on weight, but you'll get a generous serving of crispy Malunggay Chips!"],
+            "are malunggay chips gluten-free": ["Yes, our Malunggay Chips are gluten-free, making them suitable for those with gluten sensitivities.", "Absolutely! Our Malunggay Chips contain no gluten, perfect for those with dietary restrictions."],
+            "do you offer any other snacks": ["Currently, we specialize in Malunggay Chips, but we are working on expanding our healthy snack offerings.", "We currently offer only Malunggay Chips, but we are looking to add more healthy snacks soon!"],
+            "how do I pay for my order": ["You can pay via credit card, PayPal, or other secure online payment methods on our website.", "We accept payments through credit card, PayPal, and other online payment options for your convenience."],
+            "can I return my order": ["We accept returns within 7 days if the product is unopened and in its original condition.", "Yes, we offer returns within 7 days for unopened items. Please contact us for further instructions."],
+            "when will I receive my order": ["Your order will be shipped within 1-3 business days. Delivery times depend on your location.", "We process orders within 1-3 business days, and delivery times vary based on your location."],
+            "do you offer gift cards": ["Not at the moment, but we are considering offering gift cards in the future.", "Currently, we do not offer gift cards, but we may add them later on! Stay tuned!"],
+            "are malunggay chips crunchy": ["Yes! Our Malunggay Chips are perfectly crispy and crunchy, making them a satisfying snack!", "You can count on our Malunggay Chips to be deliciously crispy and crunchy!"],
+            "why should I choose malunggay chips": ["Malunggay Chips are a nutritious, tasty, and guilt-free snack that's perfect for anyone looking to make healthier choices!", "Choose Malunggay Chips for a healthy, flavorful alternative to traditional junk food chips! Packed with nutrients, they’re the smarter snack choice!"]
+        };
+
+        // Match input and return a random response
+        const normalizedInput = userInput.toLowerCase();
+        for (let key in responses) {
+            if (normalizedInput.includes(key)) {
+                return responses[key][Math.floor(Math.random() * responses[key].length)];
+            }
+        }
+
+        return "Sorry, I didn't understand that. Can you ask something else?";
+    }
+
+    function toggleChatWindow() {
+        const chatWindow = document.getElementById('chat-window');
+        chatWindow.style.display = (chatWindow.style.display === 'none') ? 'block' : 'none';
+    }
+
+    // Page Management
+    function showPage(page) {
+        let pages = document.querySelectorAll('.page');
+        pages.forEach(p => p.style.display = 'none');
+        document.getElementById(page).style.display = 'block';
+    }
+
+    // Popup Notification
+    function showPopup(message) {
+        const popup = document.getElementById("popup");
+        popup.textContent = message;
+        popup.style.display = "block";
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 2000);
+    }
+
+    // Initial Load
+    showPage('home');

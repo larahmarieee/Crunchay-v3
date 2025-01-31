@@ -1,0 +1,248 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    background-image: url(bg3.jpg);
+}
+
+header {
+    background-color: #05ce31;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.navbar {
+    text-align: center;
+    background-color: #28df31;
+    padding: 10px 0;
+}
+
+.navbar a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.navbar a:hover {
+    background-color: #0a9f12;
+}
+
+.page {
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.product-card {
+    display: inline-block;
+    width: 250px;
+    margin: 10px;
+    text-align: center;
+    background-color: #e8f5e9;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.cart {
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.cart-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cart-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.checkout {
+    text-align: center;
+    padding: 10px;
+    background-color: #66bb6a;
+    color: white;
+    border-radius: 8px;
+}
+
+.cart-button, .checkout-button {
+    background-color: #388e3c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart-button:hover, .checkout-button:hover {
+    background-color: #81c784;
+}
+
+.qr-code {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Improved Chatbot Styles */
+.chat-bubble-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    background-color: #66bb6a;
+    color: white;
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.chat-window {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    max-height: 450px;
+    display: none;
+    overflow: hidden;
+    z-index: 1000;
+    animation: slideUp 0.3s ease-in-out;
+}
+
+.chat-history {
+    max-height: 350px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 10px;
+}
+
+.chat-bubble {
+    background-color: #e1ffc7;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 75%;
+    word-wrap: break-word;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.chat-bubble.bot {
+    background-color: #f0f0f0;
+    align-self: flex-start;
+    max-width: 70%;
+}
+
+.chat-bubble.user {
+    background-color: #66bb6a;
+    color: white;
+    align-self: flex-end;
+    max-width: 70%;
+}
+
+.chat-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    font-size: 14px;
+    outline: none;
+    background-color: #f5f5f5;
+    box-sizing: border-box;
+}
+
+.chat-input:focus {
+    border-color: #66bb6a;
+}
+
+.send-button {
+    background-color: #66bb6a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: #388e3c;
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Popup Notification */
+.popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #388e3c;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+    z-index: 1000;
+}
+
+.product-card {
+    width: 3in; /* Width of 3 inches */
+    height: 4.5in; /* Height of 4.5 inches */
+    border: 1px solid #ccc; /* Optional border */
+    border-radius: 8px; /* Optional rounded corners */
+    overflow: hidden; /* Ensures content doesn't overflow */
+    text-align: center; /* Center text and images */
+    margin: 10px; /* Space between cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
+}
+
+.product-card img {
+    width: 100%; /* Makes the image responsive to card width */
+    height: auto; /* Maintains aspect ratio */
+}
+
+.product-card p {
+    margin: 10px 0; /* Space above and below the text */
+    font-size: 16px; /* Font size for the product name */
+}
+
+.contact-container{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-image: url();
+    text-align: center;
+    justify-content: center;
+}
+
+.product-container{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-image: url();
+    text-align: center;
+    justify-content: center;
+}
+
+
